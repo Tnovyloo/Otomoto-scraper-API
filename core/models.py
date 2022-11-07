@@ -2,8 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+class SearchedURLModel(models.Model):
+    url = models.CharField(max_length=1500)
+
 class CarURLModel(models.Model):
-    models.URLField(max_length=1500)
+    models.CharField(max_length=1500)
 
 class Brand(models.Model):
     models.CharField(max_length=255)
@@ -34,5 +37,5 @@ class Car(models.Model):
     doors = models.IntegerField()
     capacity = models.IntegerField()
 
-class SearchedURLModel(models.Model):
-    models.ForeignKey(Car, on_delete=models.CASCADE)
+    searched_url = models.ForeignKey(SearchedURLModel, on_delete=models.CASCADE, default="None")
+
