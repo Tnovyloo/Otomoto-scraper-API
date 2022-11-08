@@ -5,6 +5,9 @@ from django.db import models
 class SearchedURLModel(models.Model):
     url = models.CharField(max_length=1500, default='None')
 
+    def __str__(self):
+        return f"Searched URL: {self.url}"
+
 class CarURLModel(models.Model):
     models.CharField(max_length=1500)
 

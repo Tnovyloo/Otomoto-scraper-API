@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .models import *
 from .serializer import SearchedURLModel
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 from rest_framework import generics
+from .scraper import *
 
 # Create your views here.
 
@@ -17,5 +18,6 @@ class CarsCreateAPIView(generics.CreateAPIView):
 
                 # TODO Create there a functions to scrap cars data and save it to database.
                 # Create own id of searched user GET and tag a cars to it.
+                print(DownloadPage(url=user_url).start())
 
                 serializer.save()
