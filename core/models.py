@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class SearchedURLModel(models.Model):
-    url = models.CharField(max_length=1500)
+    url = models.CharField(max_length=1500, default='None')
 
 class CarURLModel(models.Model):
     models.CharField(max_length=1500)
@@ -38,4 +38,3 @@ class Car(models.Model):
     capacity = models.IntegerField()
 
     searched_url = models.ForeignKey(SearchedURLModel, on_delete=models.CASCADE, default="None")
-
