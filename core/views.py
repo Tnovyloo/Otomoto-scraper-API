@@ -18,6 +18,6 @@ class CarsCreateAPIView(generics.CreateAPIView):
 
                 # TODO Create there a functions to scrap cars data and save it to database.
                 # Create own id of searched user GET and tag a cars to it.
-                print(DownloadPage(url=user_url).start())
-
+                cars = DownloadPage(url=user_url).start()
+                print(ScrapMoreData(cars))
                 serializer.save()

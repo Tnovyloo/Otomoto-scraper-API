@@ -91,7 +91,10 @@ class DownloadPage:
 
         pool.close()
         pool.join()
-        return self.price_cars_list, self.link_cars_list
+
+        cars = zip(self.price_cars_list, self.link_cars_list)
+
+        return cars
 
 class ScrapMoreData:
     def __init__(self, car_dict:dict):
