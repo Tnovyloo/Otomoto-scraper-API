@@ -27,6 +27,7 @@ class Color(models.Model):
     models.CharField(max_length=100)
 
 class Car(models.Model):
+    """car_url -> Foreign Key of Searched """
     car_url = models.ForeignKey(CarURLModel, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     fuel = models.ForeignKey(Fuel, on_delete=models.CASCADE)

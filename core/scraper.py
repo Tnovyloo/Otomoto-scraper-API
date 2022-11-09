@@ -50,7 +50,7 @@ class DownloadPage:
         response = requests.get(url).text
         inner_soup = bs.BeautifulSoup(response, 'html5lib')
         cars_price = inner_soup.findAll('span',
-                                        class_='ooa-epvm6 e1b25f6f8')  # Sometimes the class of 'span' on te web-page is changed
+                                        class_='ooa-1bmnxg7 e1b25f6f11')  # Sometimes the class of 'span' on te web-page is changed
         for price in cars_price:
             self.price_cars_list.append(str(price.text).strip('PLN '))  # Appending price to list
 
@@ -92,17 +92,19 @@ class DownloadPage:
         pool.close()
         pool.join()
 
-        cars = zip(self.price_cars_list, self.link_cars_list)
+        # print(self.price_cars_list, self.link_cars_list)
+        cars = dict(zip(self.price_cars_list, self.link_cars_list))
 
         return cars
 
 class ScrapMoreData:
-    def __init__(self, car_dict:dict):
-        self.car_info = car_dict
+    def __init__(self):
+        # self.car_info = car_dict
+        pass
 
     def find_more_data(self, url):
         html = requests.get(url).text
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = bs.BeautifulSoup(html, 'html.parser')
 
         li_data = soup.findAll('li', class_='offer-params__item')
         # print(li_data)
@@ -140,6 +142,11 @@ class ScrapMoreData:
                 result[element] = answer
 
         return result
+
+    def extractDataFromURL(self, url: str):
+        temp_list = url.split('/')
+        brand = temp_list[4].split('-')[0].lower() #table name
+        return brand
 
     def start(self, url, price):
         # for price, url in self.car_info.items():
