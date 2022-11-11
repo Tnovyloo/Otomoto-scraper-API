@@ -39,7 +39,10 @@ class Color(models.Model):
         return str(self.color).capitalize()
 
 class Car(models.Model):
-    """car_url -> Foreign Key of Searched """
+
+    def __str__(self):
+        return f"{str(self.brand).capitalize()} {str(self.version).capitalize()}"
+
     car_url = models.CharField(max_length=2000)
     price = models.IntegerField(default=0)
 
@@ -57,3 +60,4 @@ class Car(models.Model):
     capacity = models.IntegerField()
 
     searched_url = models.ForeignKey(SearchedURLModel, on_delete=models.CASCADE, default="None")
+
