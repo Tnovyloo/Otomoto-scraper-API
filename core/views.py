@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import *
-from .serializer import SearchedURLModel
+from .serializer import SearchedURLSerializer
 from bs4 import BeautifulSoup as bs
 from rest_framework import generics
 from .scraper import *
@@ -10,11 +10,10 @@ from .scraper import *
 
 class CarsCreateAPIView(generics.CreateAPIView):
     queryset = Car.objects.all()
-    serializer_class = SearchedURLModel
+    serializer_class = SearchedURLSerializer
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer, *args, **kwargs):
             user_url = serializer.validated_data.get('url')
-            user_url_id = serializer.validated_data.get('id')
 
             if user_url is not None:
 
@@ -23,26 +22,56 @@ class CarsCreateAPIView(generics.CreateAPIView):
                 for key in cars_dict:
                     print(key, '->', cars_dict[key])
 
-                serializer.save()
+                data_id = serializer.save()
+                user_url_obj = SearchedURLModel.objects.get(pk=data_id.id)
 
                 for car in cars_dict.items():
                     smd = ScrapMoreData()
                     brand = smd.extractDataFromURL(url=car[1])
                     price = int(str(car[0]).replace(' ', ''))
-                    url = car[1]
+                    car_url = car[1]
                     result = smd.start(price=car[0], url=car[1])
 
-                    car_object = Car(car_url=user_url_id,
-                                     brand=brand,
+                    # Create Foreign Keys if they don't exist.
+                    if Brand.objects.filter(brand=brand).exists() is False:
+                        new_brand = Brand.objects.create(brand=brand)
+                        new_brand.save()
+
+                    if Fuel.objects.filter(fuel_type=result.get('Rodzaj paliwa')).exists() is False:
+                        new_fuel = Fuel.objects.create(fuel_type=result.get('Rodzaj paliwa'))
+                        new_fuel.save()
+
+                    if Gearbox.objects.filter(gearbox_type=result.get('Skrzynia biegów')).exists() is False:
+                        new_gearbox = Gearbox.objects.create(gearbox_type=result.get('Skrzynia biegów'))
+                        new_gearbox.save()
+
+                    if BodyType.objects.filter(bodytype=result.get('Typ nadwozia')).exists() is False:
+                        new_bodytype = BodyType.objects.create(bodytype=result.get('Typ nadwozia'))
+                        new_bodytype.save()
+
+                    if Color.objects.filter(color=result.get('Kolor')).exists() is False:
+                        new_color = Color.objects.create(color=result.get('Kolor'))
+                        new_color.save()
+
+                    brand_obj = Brand.objects.get(brand=brand)
+                    fuel_obj = Fuel.objects.get(fuel_type=result.get('Rodzaj paliwa'))
+                    gearbox_obj = Gearbox.objects.get(gearbox_type=result.get('Skrzynia biegów'))
+                    bodytype_obj = BodyType.objects.get(bodytype=result.get('Typ nadwozia'))
+                    color_obj = Color.objects.get(color=result.get('Kolor'))
+
+                    car_object = Car(searched_url=user_url_obj,
+                                     price=price,
+                                     car_url=car_url,
+                                     brand=brand_obj,
+                                     body_type=bodytype_obj,
+                                     gearbox=gearbox_obj,
+                                     color=color_obj,
+                                     fuel=fuel_obj,
                                      year=int(result.get("Rok produkcji")),
                                      version=result.get("Wersja"),
+                                     capacity=int(result.get('Pojemność skokowa').replace(" cm3", "").replace(" ", "")),
                                      horsepower=int(result.get('Moc').replace(" KM", "")),
                                      doors=int(result.get('Liczba drzwi')),
-                                     fuel=result.get('Rodzaj paliwa'),
-                                     capacity=int(result.get('Pojemność skokowa').replace(" cm3", "").replace(" ", "")),
-                                     gearbox=result.get('Skrzynia biegów'),
-                                     bodytype=result.get('Typ nadwozia'),
-                                     color=result.get('Kolor')
                                      )
                     car_object.save()
 

@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import *
 
-class SearchedURLModel(serializers.ModelSerializer):
+class SearchedURLSerializer(serializers.ModelSerializer):
+    # id = serializers.IntegerField(read_only=True)
     class Meta:
         model = SearchedURLModel
-        fields = ('__all__')
+        fields = ['url']
