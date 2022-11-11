@@ -67,6 +67,7 @@ class CarsCreateAPIView(generics.CreateAPIView):
                                      gearbox=gearbox_obj,
                                      color=color_obj,
                                      fuel=fuel_obj,
+                                     model=result.get('Model pojazdu'),
                                      year=int(result.get("Rok produkcji")),
                                      version=result.get("Wersja"),
                                      capacity=int(result.get('Pojemność skokowa').replace(" cm3", "").replace(" ", "")),

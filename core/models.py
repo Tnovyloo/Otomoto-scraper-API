@@ -48,8 +48,8 @@ class Car(models.Model):
     gearbox = models.ForeignKey(Gearbox, on_delete=models.CASCADE)
     body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
-
     model = models.CharField(max_length=255)
+
     year = models.IntegerField(null=False)
     version = models.CharField(max_length=100)
     horsepower = models.IntegerField()
