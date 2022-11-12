@@ -76,4 +76,5 @@ class CarsCreateAPIView(generics.CreateAPIView):
                                      )
                     car_object.save()
 
-# class CarsListAPIView(generics.) #TODO create a list view, user gives a ID and gets a list of his you know
+# class CarsListAPIView(generics.ListAPIView) #TODO create a list view, user gives a ID and gets a list of his you know
+
