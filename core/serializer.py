@@ -6,3 +6,8 @@ class SearchedURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = SearchedURLModel
         fields = ['url']
+
+class CarsURLSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = "__all__"

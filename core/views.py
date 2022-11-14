@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import *
-from .serializer import SearchedURLSerializer
+from .serializer import *
 from bs4 import BeautifulSoup as bs
 from rest_framework import generics
 from .scraper import *
@@ -76,5 +76,12 @@ class CarsCreateAPIView(generics.CreateAPIView):
                                      )
                     car_object.save()
 
-# class CarsListAPIView(generics.ListAPIView) #TODO create a list view, user gives a ID and gets a list of his you know
+# class CarsListAPIView(generics.RetrieveAPIView):
+class CarsListAPIView(generics.ListAPIView):
+    queryset = SearchedURLModel.objects.all()
+    serializer_class = CarsURLSerializer
 
+    def get_queryset(self):
+        # return super().get_queryset().filter(id=self.kwargs['pk'])
+        objects = Car.objects.filter(searched_url=self.kwargs['pk']).all()
+        return objects
