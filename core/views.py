@@ -79,9 +79,17 @@ class CarsCreateAPIView(generics.CreateAPIView):
 # class CarsListAPIView(generics.RetrieveAPIView):
 class CarsListAPIView(generics.ListAPIView):
     queryset = SearchedURLModel.objects.all()
-    serializer_class = CarsURLSerializer
+    serializer_class = SearchedURLSerializer
+    depth = 2
 
     def get_queryset(self):
+        queryset = Car.objects.all()
+        pk = self.request.query_params.get('pk')
+        if pk is not None:
+            queryset = queryset.filter(searched_url=pk)
+        return queryset
+
         # return super().get_queryset().filter(id=self.kwargs['pk'])
-        objects = Car.objects.filter(searched_url=self.kwargs['pk']).all()
-        return objects
+
+        # objects = Car.objects.filter(searched_url=self.kwargs['pk']).all()
+        # return objects

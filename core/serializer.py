@@ -7,7 +7,7 @@ class SearchedURLSerializer(serializers.ModelSerializer):
         model = SearchedURLModel
         fields = ['url']
 
-class CarsURLSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = "__all__"
+# class CarsURLSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Car
+#         fields = "__all__"
