@@ -5,6 +5,7 @@ from .serializer import *
 from bs4 import BeautifulSoup as bs
 from rest_framework import generics
 from .scraper import *
+from django.db.models import Subquery
 
 # Create your views here.
 
@@ -80,14 +81,25 @@ class CarsCreateAPIView(generics.CreateAPIView):
 class CarsListAPIView(generics.ListAPIView):
     queryset = SearchedURLModel.objects.all()
     serializer_class = SearchedURLSerializer
-    depth = 2
+    depth = 1
 
     def get_queryset(self):
+        # queryset = Car.objects.all()
+        # pk = self.request.query_params.get('pk')
+        # if pk is not None:
+        #     queryset = queryset.filter(searched_url=Subquery(queryset.values(pk)))
+        # return queryset
+
+
         queryset = Car.objects.all()
         pk = self.request.query_params.get('pk')
         if pk is not None:
             queryset = queryset.filter(searched_url=pk)
         return queryset
+
+        # pk = self.request.query_params.get('pk')
+        # if pk is not None:
+        #     return Car.objects.filter(searched_url=pk)
 
         # return super().get_queryset().filter(id=self.kwargs['pk'])
 

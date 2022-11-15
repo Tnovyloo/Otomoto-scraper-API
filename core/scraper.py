@@ -67,7 +67,7 @@ class DownloadPage:
         soup = bs.BeautifulSoup(response, 'html5lib')
 
         webpages = soup.findAll('a',
-                                class_='ooa-g4wbjr ekxs86z0')  # Sometimes the class of 'a' on te web-page is changed
+                                class_='ooa-xdlax9 ekxs86z0')  # Sometimes the class of 'a' on te web-page is changed
         if len(webpages) == 0:  # Check if there is problem with finding amount of pages
             self.page_list = ['0']
         else:
