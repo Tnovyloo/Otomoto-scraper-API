@@ -23,12 +23,11 @@ class CarSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SearchedURLSerializer(serializers.HyperlinkedModelSerializer):
-    # id = serializers.IntegerField(read_only=True)
-    car = CarSerializer(many=True, read_only=True)
+    cars = CarSerializer(many=True, read_only=True)
 
     class Meta:
         model = SearchedURLModel
-        fields = ['url', 'car']
+        fields = ['url', 'cars']
 
 
 # class CarsURLSerializer(serializers.ModelSerializer):

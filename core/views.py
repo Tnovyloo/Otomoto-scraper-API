@@ -81,21 +81,44 @@ class CarsCreateAPIView(generics.CreateAPIView):
 class CarsListAPIView(generics.ListAPIView):
     queryset = SearchedURLModel.objects.all()
     serializer_class = SearchedURLSerializer
-    depth = 1
+    lookup_field = 'pk'
 
     def get_queryset(self):
         # queryset = Car.objects.all()
         # pk = self.request.query_params.get('pk')
+        # # pk = kwargs["pk"]
+        # print(pk)
         # if pk is not None:
         #     queryset = queryset.filter(searched_url=Subquery(queryset.values(pk)))
-        # return queryset
-
+        #     return queryset
+        # return
 
         queryset = Car.objects.all()
-        pk = self.request.query_params.get('pk')
+        pk = self.kwargs.get(self.lookup_field)
+        print(pk)
         if pk is not None:
             queryset = queryset.filter(searched_url=pk)
-        return queryset
+            print(queryset)
+            serializer = SearchedURLSerializer(queryset)
+            # print(serializer.data)
+            return serializer.data
+        return None
+
+
+        # queryset = Car.objects.all()
+        # pk = self.request.query_params.get('pk')
+        # if pk is not None:
+        #     queryset = queryset.filter(searched_url=pk)
+        #     serializer = CarSerializer(queryset)
+        #     return serializer.data
+
+        # queryset = Car.objects.all()
+        # pk = self.request.query_params.get('pk')
+        # print(pk)
+        # if pk is not None:
+        #     queryset = queryset.filter(searched_url=pk)
+        #     print(queryset)
+        # return queryset
 
         # pk = self.request.query_params.get('pk')
         # if pk is not None:
