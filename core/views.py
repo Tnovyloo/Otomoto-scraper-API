@@ -6,6 +6,10 @@ from bs4 import BeautifulSoup as bs
 from rest_framework import generics
 from .scraper import *
 from django.db.models import Subquery
+from django.http import JsonResponse
+from rest_framework.response import Response
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 # Create your views here.
 
@@ -77,54 +81,15 @@ class CarsCreateAPIView(generics.CreateAPIView):
                                      )
                     car_object.save()
 
-# class CarsListAPIView(generics.RetrieveAPIView):
 class CarsListAPIView(generics.ListAPIView):
-    queryset = SearchedURLModel.objects.all()
-    serializer_class = SearchedURLSerializer
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
     lookup_field = 'pk'
 
     def get_queryset(self):
-        # queryset = Car.objects.all()
-        # pk = self.request.query_params.get('pk')
-        # # pk = kwargs["pk"]
-        # print(pk)
-        # if pk is not None:
-        #     queryset = queryset.filter(searched_url=Subquery(queryset.values(pk)))
-        #     return queryset
-        # return
-
-        queryset = Car.objects.all()
         pk = self.kwargs.get(self.lookup_field)
         print(pk)
         if pk is not None:
-            queryset = queryset.filter(searched_url=pk)
-            print(queryset)
-            serializer = SearchedURLSerializer(queryset)
-            # print(serializer.data)
-            return serializer.data
+            queryset = self.queryset.filter(searched_url=pk)
+            return queryset
         return None
-
-
-        # queryset = Car.objects.all()
-        # pk = self.request.query_params.get('pk')
-        # if pk is not None:
-        #     queryset = queryset.filter(searched_url=pk)
-        #     serializer = CarSerializer(queryset)
-        #     return serializer.data
-
-        # queryset = Car.objects.all()
-        # pk = self.request.query_params.get('pk')
-        # print(pk)
-        # if pk is not None:
-        #     queryset = queryset.filter(searched_url=pk)
-        #     print(queryset)
-        # return queryset
-
-        # pk = self.request.query_params.get('pk')
-        # if pk is not None:
-        #     return Car.objects.filter(searched_url=pk)
-
-        # return super().get_queryset().filter(id=self.kwargs['pk'])
-
-        # objects = Car.objects.filter(searched_url=self.kwargs['pk']).all()
-        # return objects

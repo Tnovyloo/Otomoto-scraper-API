@@ -16,13 +16,12 @@ from .models import *
 #         model = SearchedURLModel
 #         fields = ['url', 'car']
 
-
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = "__all__"
 
-class SearchedURLSerializer(serializers.HyperlinkedModelSerializer):
+class SearchedURLSerializer(serializers.ModelSerializer):
     cars = CarSerializer(many=True, read_only=True)
 
     class Meta:
