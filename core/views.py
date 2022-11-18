@@ -14,6 +14,8 @@ import json
 # Create your views here.
 
 class CarsCreateAPIView(generics.CreateAPIView):
+    """When user provides a 'Otomoto' URL, the API scraps all cars and
+    their own data to database."""
     queryset = Car.objects.all()
     serializer_class = SearchedURLSerializer
 
@@ -37,7 +39,7 @@ class CarsCreateAPIView(generics.CreateAPIView):
                     car_url = car[1]
                     result = smd.start(price=car[0], url=car[1])
 
-                    # Create Foreign Keys if they don't exist.
+                    # Create Foreign Keys if they still doesn't exist.
                     if Brand.objects.filter(brand=brand).exists() is False:
                         new_brand = Brand.objects.create(brand=brand)
                         new_brand.save()
@@ -82,6 +84,9 @@ class CarsCreateAPIView(generics.CreateAPIView):
                     car_object.save()
 
 class CarsListAPIView(generics.ListAPIView):
+    """While getting a PK it returns all cars with data where the
+        'PK' was the same (Primary key is once per searched url.)
+        """
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     lookup_field = 'pk'
