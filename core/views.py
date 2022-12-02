@@ -82,6 +82,7 @@ class CarsCreateAPIView(generics.CreateAPIView):
                                      doors=int(result.get('Liczba drzwi')),
                                      )
                     car_object.save()
+                return Response()
 
 class CarsListAPIView(generics.ListAPIView):
     """While getting a PK it returns all cars with data where the
@@ -98,3 +99,5 @@ class CarsListAPIView(generics.ListAPIView):
             queryset = self.queryset.filter(searched_url=pk)
             return queryset
         return None
+
+

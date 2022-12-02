@@ -55,7 +55,7 @@ class DownloadPage:
             self.price_cars_list.append(str(price.text).strip('PLN '))  # Appending price to list
 
         cars_links = inner_soup.findAll('h2',
-                                        class_='e1b25f6f6 e1b25f6f19 ooa-10p8u4x er34gjf0')  # Sometimes the class of 'h2' on te web-page is changed
+                                        class_='e1b25f6f6 e1b25f6f20 ooa-10p8u4x er34gjf0')  # Sometimes the class of 'h2' on te web-page is changed
         for link in cars_links:
             link = link.find('a', href=True)
             self.link_cars_list.append(link['href'])  # Appending URL to list
